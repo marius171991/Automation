@@ -8,6 +8,8 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 
+import java.util.concurrent.TimeUnit;
+
 public class LoginLogoutPage extends Helper2 {
 
     @FindBy(css = "a.nav-link[data-target*=\"#logInModal\"]")
@@ -65,10 +67,12 @@ public class LoginLogoutPage extends Helper2 {
     // Test 2: Successful login and logout
     public void successfulLogin(String user, String pass) {
         clickElement(this.getDriver(), logIn(), 3000);
+        element(logIn).withTimeoutOf(15, TimeUnit.SECONDS).waitUntilVisible();
         Assert.assertTrue("Login Button is not functional", logIn.isDisplayed());
         clickAndSendKeys(this.getDriver(), username(), user, 3000);
         clickAndSendKeys(this.getDriver(), password(), pass, 3000);
         clickElement(this.getDriver(), logInButton(), 3000);
+        element(loginConfirmation).withTimeoutOf(15, TimeUnit.SECONDS).waitUntilVisible();
         Assert.assertTrue("Login Confirmation is not functional", loginConfirmation.isDisplayed());
         clickElement(this.getDriver(), logout(), 3000);
         Assert.assertTrue("The user is not logged out", logIn.isDisplayed());
@@ -78,14 +82,12 @@ public class LoginLogoutPage extends Helper2 {
     // Test 3: Empty fields login
     public void emptyFieldsLogin() {
         clickElement(this.getDriver(), logIn(), 3000);
-        Assert.assertTrue("Login Button is not functional", logIn.isDisplayed());
         clickElement(this.getDriver(), logInButton(), 3000);
     }
 
     // Test 4: Empty field for username
     public void emptyUsernameField(String pass) {
         clickElement(this.getDriver(), logIn(), 3000);
-        Assert.assertTrue("Login Button is not functional", logIn.isDisplayed());
         clickAndSendKeys(this.getDriver(), password(), pass, 3000);
         clickElement(this.getDriver(), logInButton(), 3000);
     }
@@ -93,7 +95,6 @@ public class LoginLogoutPage extends Helper2 {
     // Test 5: Empty field for password
     public void emptyPasswordField(String user) {
         clickElement(this.getDriver(), logIn(), 3000);
-        Assert.assertTrue("Login Button is not functional", logIn.isDisplayed());
         clickAndSendKeys(this.getDriver(), username(), user, 3000);
         clickElement(this.getDriver(), logInButton(), 3000);
     }
@@ -101,7 +102,6 @@ public class LoginLogoutPage extends Helper2 {
     // Test 5: Invalid credentials (invalid username and password credentials)
     public void invalidCredentials(UserInfo userInfo) {
         clickElement(this.getDriver(), logIn(), 3000);
-        Assert.assertTrue("Login Button is not functional", logIn.isDisplayed());
         clickAndSendKeys(this.getDriver(), username(), userInfo.username, 3000);
         clickAndSendKeys(this.getDriver(), password(), userInfo.password, 3000);
     }
@@ -109,7 +109,6 @@ public class LoginLogoutPage extends Helper2 {
     // Test 6: Invalid credentials (valid username and password with a space afterwards)
     public void usernamePasswordSpaceAfterwards(UserInfo userInfo) {
         clickElement(this.getDriver(), logIn(), 3000);
-        Assert.assertTrue("Login Button is not functional", logIn.isDisplayed());
         clickAndSendKeys(this.getDriver(), username(), userInfo.validUsernameBlankSpace, 3000);
         clickAndSendKeys(this.getDriver(), password(), userInfo.validPasswordBlankSpace, 3000);
         clickElement(this.getDriver(), logInButton(), 3000);
